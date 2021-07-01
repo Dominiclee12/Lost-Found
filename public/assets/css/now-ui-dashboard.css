@@ -349,7 +349,8 @@ Copyright (c) 2015 Daniel Eden
   font-size: 0.8571em;
   line-height: 1.35em;
   border: none;
-  margin: 10px 1px;
+  /* default margin 10px 1px */
+  margin: 1px 1px;
   border-radius: 0.1875rem;
   padding: 11px 22px;
   cursor: pointer;
@@ -1908,8 +1909,8 @@ h5,
 h6,
 .h6 {
   font-size: 1em;
-  font-weight: 700;
-  text-transform: uppercase;
+  /* font-weight: 700;
+  text-transform: uppercase; */
 }
 
 p.description {
@@ -4145,6 +4146,21 @@ Created using IcoMoon - icomoon.io
   color: #FFB236;
 }
 
+.sidebar[data-color="gray"]:after,
+.off-canvas-sidebar[data-color="gray"]:after {
+  background: #6c757d;
+}
+
+.sidebar[data-color="gray"] .nav li.active>a:not([data-toggle="collapse"]),
+.off-canvas-sidebar[data-color="gray"] .nav li.active>a:not([data-toggle="collapse"]) {
+  color: #6c757d;
+}
+
+.sidebar[data-color="gray"] .nav li.active>a:not([data-toggle="collapse"]) i,
+.off-canvas-sidebar[data-color="gray"] .nav li.active>a:not([data-toggle="collapse"]) i {
+  color: #6c757d;
+}
+
 .visible-on-sidebar-regular {
   display: inline-block !important;
 }
@@ -4665,6 +4681,10 @@ Created using IcoMoon - icomoon.io
 
 .card[data-background-color="green"] {
   background-color: #18ce0f;
+}
+
+.card[data-background-color="gray"] {
+  background-color: #6c757d;
 }
 
 .card .image {

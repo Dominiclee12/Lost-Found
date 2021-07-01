@@ -1,7 +1,7 @@
 @extends('layouts.apps')
 
 @section('content')
-<div class="container">
+<div class="container" style="padding-top:130px;">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -64,10 +64,56 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="faculty" class="col-md-4 col-form-label text-md-right">{{ __('Faculty') }}</label>
+
+                            <div class="col-md-6">
+                                <select class="form-control @error('faculty') is-invalid @enderror" id="faculty" name="faculty" value="{{ old('faculty') }}" autofocus>
+                                    <option value="">Select Faculty</option>
+                                    <option value="FEP">FEP</option>
+                                    <option value="FF">FF</option>
+                                    <option value="FKAB">FKAB</option>
+                                    <option value="FPI">FPI</option>
+                                    <option value="FP">FP</option>
+                                    <option value="FPEND">FPEND</option>
+                                    <option value="FPERG">FPERG</option>
+                                    <option value="FSK">FSK</option>
+                                    <option value="FST">FST</option>
+                                    <option value="FSSK">FSSK</option>
+                                    <option value="FTSM">FTSM</option>
+                                    <option value="FUU">FUU</option>
+                                </select>
+
+                                @error('faculty')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender') }}</label>
+
+                            <div class="col-md-6">
+                                <select class="form-control @error('gender') is-invalid @enderror" id="gender" name="gender" value="{{ old('gender') }}" required autofocus>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+
+                                @error('gender')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="name" autofocus>
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
 
                                 @error('phone')
                                     <span class="invalid-feedback" role="alert">

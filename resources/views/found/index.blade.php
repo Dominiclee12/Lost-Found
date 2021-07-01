@@ -1,72 +1,86 @@
 @extends('layouts.master')
 
 @section('title')
-    Lost & Found Admin Dashboard | Found Post
+    Found Post
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-            <h4 class="card-title">Found Posts</h4>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                    <thead class=" text-primary">
-                        <th>ID</th>
-                        <th width="15%">Image</th>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th></th>
-                    </thead>
-                    <tbody>
-                        @if(count($founds) > 0)
-                            @foreach ($founds as $found)
-                                <tr>
-                                    <td>{{$found->id}}</td>
-                                    <td><img width="70%" class="rounded mx-auto" src="/storage/found_images/{{$found->image}}"></td>
-                                    <td>{{$found->title}}</td>
-                                    <td>{{$found->category->name}}</td>
-                                    <td>
-                                        {!! Form::open(['action' => ['FoundController@destroy', $found->id], 'method' => 'POST']) !!}
-                                            {{Form::hidden('_method', 'DELETE')}}
-                                            {{Form::submit('Delete', ['class' => 'btn btn-danger btn-round float-right', 'onclick' => "return confirm('Are you sure?')"])}}
-                                        {!! Form::close() !!}
-                                        <a href="/founds/{{$found->id}}/edit" class="btn btn-warning btn-round float-right">Edit</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else
-                            No post found
-                        @endif
-                    </tbody>
-                    </table>
-                </div>
-
-                {{$founds->links("pagination::bootstrap-4")}}
-                <a href="/founds/create" class="btn btn-primary btn-round float-right">Add Found Item</a>
-            </div>
-        </div>
-        </div>
+    <div class="panel-header panel-header-sm">
     </div>
+    <div class="content">
+        {{-- Message --}}
+        @include('inc.messages')
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Found Posts</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="myTable">
+                                <thead class="text-primary">
+                                    <th>ID</th>
+                                    <th width="15%">Image</th>
+                                    <th>Item Name</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Date Found</th>
+                                    <th>
+                                        Actions
+                                        <a href="/founds/create" class="btn btn-primary btn-icon btn-round float-right" style="height: 1.7rem;
+                                        min-width: 1.7rem;
+                                        width: 1.7rem;"><i
+                                                class="now-ui-icons ui-1_simple-add"></i></a>
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($founds as $found)
+                                        <tr>
+                                            <td>{{ $found->id }}</td>
+                                            <td><img width="70%" class="rounded mx-auto"
+                                                    src="/storage/found_images/{{ $found->images->first()->name }}">
+                                            </td>
+                                            <td>{{ $found->title }}</td>
+                                            <td>{{ $found->category->name }}</td>
+                                            <td>{{ $found->location }}</td>
+                                            <td>{{ $found->date }}</td>
+                                            <td>
+                                                <a href="/found-detail/{{ $found->id }}"
+                                                    class="btn btn-info btn-round btn-icon float-left"><i
+                                                        class="now-ui-icons design_bullet-list-67"></i></a>
+                                                <a href="/founds/{{ $found->id }}/edit"
+                                                    class="btn btn-warning btn-round btn-icon float-left"><i
+                                                        class="now-ui-icons ui-1_settings-gear-63"></i></a>
+                                                {!! Form::open(['action' => ['FoundController@destroy', $found->id], 'method' => 'POST']) !!}
+                                                {{ Form::hidden('_method', 'DELETE') }}
+                                                <button type="submit" class="btn btn-danger btn-round btn-icon float-left"
+                                                    onClick="return confirm('Are you sure?')"><i
+                                                        class="now-ui-icons ui-1_simple-remove"></i></button>
+                                                {!! Form::close() !!}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
-@section('scripts')
-    <!--   Core JS Files   -->
-    <script src="../assets/js/core/jquery.min.js"></script>
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-    <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-    <!--  Google Maps Plugin    -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-    <!-- Chart JS -->
-    <script src="../assets/js/plugins/chartjs.min.js"></script>
-    <!--  Notifications Plugin    -->
-    <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="../assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-    <script src="../assets/demo/demo.js"></script>
+@section('script')
+<script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            columnDefs: [{
+                orderable: false,
+                targets: [1, 6],
+            }]
+        });
+    });
+</script>
 @endsection

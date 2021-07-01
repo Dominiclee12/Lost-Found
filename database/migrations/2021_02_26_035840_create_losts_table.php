@@ -16,13 +16,13 @@ class CreateLostsTable extends Migration
         Schema::create('losts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('category');
-            $table->string('brand');
-            $table->string('primary_color');
-            $table->string('secondary_color');
+            $table->string('category_id');
+            // $table->string('brand');
+            $table->string('color');
             $table->string('location');
             $table->date('date');
             //image
+            $table->string('status')->default('Unsolve');
             $table->string('description');
             $table->timestamps();
         });

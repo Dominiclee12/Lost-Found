@@ -17,13 +17,15 @@ class CreateFoundsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('category_id');
-            $table->string('brand');
-            $table->string('primary_color');
-            $table->string('secondary_color');
+            $table->string('brand')->nullable();
+            $table->string('color')->nullable();
             $table->string('location');
             $table->date('date');
             $table->string('description');
-            $table->string('image');
+            $table->string('found_by')->nullable();
+            $table->string('found_contact')->nullable();
+            $table->string('status')->nullable();
+            // $table->string('image');
             $table->timestamps();
         });
     }

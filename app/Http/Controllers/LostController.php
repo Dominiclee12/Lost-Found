@@ -15,7 +15,9 @@ class LostController extends Controller
      */
     public function index()
     {
-        //
+        $losts = Lost::orderBy('id','asc')->where('status', '!=', 'Solved')->orWhereNull('status')->get();
+
+        return view('lost.index')->with('losts', $losts);
     }
 
     /**
@@ -26,8 +28,23 @@ class LostController extends Controller
     public function create()
     {
         $categories = Category::pluck('name', 'id');
+        $colors = [
+            'Red' => 'Red',
+            'Orange' => 'Orange',
+            'Yellow' => 'Yellow',
+            'Green' => 'Green',
+            'Blue' => 'Blue',
+            'Purple' => 'Purple',
+            'Brown' => 'Brown',
+            'Black' => 'Black',
+            'White' => 'White',
+            'Gray' => 'Gray',
+        ];
 
-        return view('lost.create')->with('categories', $categories);
+        return view('lost.create')->with([
+            'categories' => $categories,
+            'colors' => $colors,
+        ]);
     }
 
     /**
@@ -41,10 +58,8 @@ class LostController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'category' => 'required',
-            'brand' => 'required',
-            'pcolor' => 'required',
-            'scolor' => 'required',
-            'llocation' => 'required',
+            'color' => 'required',
+            'location' => 'required',
             'ldate' => 'required',
             'description' => 'required'
         ]);
@@ -52,16 +67,16 @@ class LostController extends Controller
         //Create Lost Post
         $lost = new Lost;
         $lost->title = $request->input('title');
-        $lost->category = $request->input('category');
-        $lost->brand = $request->input('brand');
-        $lost->primary_color = $request->input('pcolor');
-        $lost->secondary_color = $request->input('scolor');
-        $lost->location = $request->input('llocation');
+        $lost->category_id = $request->input('category');
+        // $lost->brand = $request->input('brand');
+        $lost->color = $request->input('color');
+        $lost->location = $request->input('location');
         $lost->date = $request->input('ldate');
         $lost->description = $request->input('description');
+        $lost->user_id = auth()->user()->id;
         $lost->save();
 
-        return redirect('/')->with('success', 'Lost Post Created');
+        return redirect('/profiles/'.auth()->user()->id)->with('success', 'Lost Report is successfully created');
     }
 
     /**
@@ -72,7 +87,9 @@ class LostController extends Controller
      */
     public function show($id)
     {
-        //
+        $lost = Lost::find($id);
+
+        return view('lost.show')->with('lost', $lost);
     }
 
     /**
@@ -83,7 +100,26 @@ class LostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $lost = Lost::find($id);
+        $categories = Category::orderBy('name', 'asc')->pluck('name', 'id');
+        $colors = [
+            'Red' => 'Red',
+            'Orange' => 'Orange',
+            'Yellow' => 'Yellow',
+            'Green' => 'Green',
+            'Blue' => 'Blue',
+            'Purple' => 'Purple',
+            'Brown' => 'Brown',
+            'Black' => 'Black',
+            'White' => 'White',
+            'Gray' => 'Gray',
+        ];
+        
+        return view('lost.edit')->with([
+            'lost' => $lost,
+            'categories' => $categories,
+            'colors' => $colors,
+            ]);
     }
 
     /**
@@ -95,7 +131,28 @@ class LostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'category' => 'required',
+            // 'brand' => 'required',
+            'color' => 'required',
+            'location' => 'required',
+            'ldate' => 'required',
+            'description' => 'required'
+        ]);
+
+        //Update Lost Post
+        $lost = Lost::find($id);
+        $lost->title = $request->input('title');
+        $lost->category_id = $request->input('category');
+        // $lost->brand = $request->input('brand');
+        $lost->color = $request->input('color');
+        $lost->location = $request->input('location');
+        $lost->date = $request->input('ldate');
+        $lost->description = $request->input('description');
+        $lost->save();
+
+        return redirect('/losts/'.$id)->with('success', 'Lost Post Updated');
     }
 
     /**
@@ -106,6 +163,31 @@ class LostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $lost = Lost::find($id);
+
+        if(auth()->user()->user_level == 'admin' || $lost->user_id == auth()->user()->id) {
+            $lost->delete();
+            return redirect('/profiles/'.$lost->user_id)->with('success', 'Lost Report Removed');
+        } else {
+            return redirect()->back()->with('error', 'This action is unauthorized.');
+        }
+    }
+
+    public function solve($id) {
+        $lost = Lost::find($id);
+
+        $lost->status = 'Solved';
+        $lost->save();
+
+        return redirect()->back()->with('success', 'This lost report has been set to solved.');
+    }
+
+    public function unsolve($id) {
+        $lost = Lost::find($id);
+
+        $lost->status = 'Unsolve';
+        $lost->save();
+
+        return redirect()->back()->with('success', 'This lost report has been set to unsolve.');
     }
 }

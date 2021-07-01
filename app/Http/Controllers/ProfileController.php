@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\User;
+use App\Lost;
 
 class ProfileController extends Controller
 {
@@ -48,7 +49,8 @@ class ProfileController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('profile.show')->with('user', $user);
+        $losts = Lost::where('user_id', $id)->get();
+        return view('profile.show')->with('user', $user)->with('losts', $losts);
     }
 
     /**
@@ -60,7 +62,24 @@ class ProfileController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('profile.edit')->with('user', $user);
+        $faculties = [
+            'FEP',
+            'FF',
+            'FKAB',
+            'FPI',
+            'FP',
+            'FPEND',
+            'FPERG',
+            'FSK',
+            'FST',
+            'FSSK',
+            'FTSM',
+            'FUU',
+        ];
+        return view('profile.edit')->with([
+            'user' => $user,
+            'faculties' => $faculties,
+        ]);
     }
 
     /**
@@ -75,7 +94,8 @@ class ProfileController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'phone' => 'required',
-            'image' => 'image|nullable'
+            'image' => 'image|nullable',
+            'gender' => 'required',
         ]);
 
         // Handle File Upload
@@ -97,6 +117,8 @@ class ProfileController extends Controller
         $user = User::find($id);
         $user->name = $request->input('name');
         $user->phone = $request->input('phone');
+        $user->gender = $request->input('gender');
+        $user->faculty = $request->input('faculty');
         if($request->hasFile('image'))
         {
             if ($user->image != 'noimage.jpg') {

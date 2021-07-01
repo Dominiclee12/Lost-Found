@@ -31,7 +31,7 @@ class LoginController extends Controller
     {
         $user = Auth::user();
         $user->user_level = auth()->user()->user_level;
-        if($user->user_level == 'admin'){
+        if($user->user_level == 'admin' || $user->user_level == 'staff'){
             return '/admin-dashboard';
         }
         if($user->user_level == 'user'){

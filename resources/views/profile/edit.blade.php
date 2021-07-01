@@ -1,108 +1,76 @@
 @extends('layouts.apps')
 
+@section('title')
+    Edit Profile
+@endsection
+
 @section('content')
-    <div class="container">
+    <div class="container" style="padding-top: 100px;">
+        @include('inc.messages')
         <div class="main-panel" id="main-panel">
-            <div class="panel-header panel-header-sm">
-            </div>
             <div class="content">
-              <div class="row">
-              <div class="col-md-4">
-                  <div class="card card-user">
-                      <div class="card-body">
-                      <div class="author">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-heading">
+                            <h2>Edit Profile</h2>
+                        </div>
+                    </div>
+                    {{-- Profile Picture --}}
+                    <div class="col-md-4">
                         {!! Form::open(['action' => ['ProfileController@update', $user->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                            <img class="rounded-circle" src="../../storage/profile_images/{{$user->image}}" alt="...">
-                            <input type="file" name="image">
-                            <h5 class="title text-center">{{$user->name}}</h5>
-                      </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-8">
-                  <div class="card">
-                      <div class="card-body">
-                      <div class="card-title">
-                          <h5 class="title">My Profile</h5>
-                      </div>
-                            <div class="row">
-                            <div class="col-md-5 pr-1">
-                                <div class="form-group">
-                                <label>Username</label>
-                                {{ Form::text('name', $user->name, ['class' => 'form-control', 'placeholder' => 'Username']) }}
+                        <img src="/storage/profile_images/{{ $user->image }}" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover; margin-bottom: 15px;display: block; border-style: groove;
+                                    margin-left: auto;
+                                    margin-right: auto;" alt="...">
+                                    <input type="file" name="image">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="contact-form">
+                            <form id="contact" action="" method="post">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <fieldset>
+                                            <label>Email-Address</label>
+                                            <input name="email" type="text" class="form-control" id="email"
+                                                value="{{ $user->email }}" disabled>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <fieldset>
+                                            <label>Username</label>
+                                            {{ Form::text('name', $user->name, ['class' => 'form-control', 'placeholder' => 'Username']) }}
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <fieldset>
+                                            <label>Gender</label>
+                                            {{ Form::select('gender', ['' => 'Select Gender', 'Male' => 'Male', 'Female' => 'Female'], $user->gender, ['class' => 'form-control']) }}
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6" style="margin-bottom: 15px;">
+                                        <fieldset>
+                                            <label>Faculty</label>
+                                            {{ Form::select('faculty', ['' => 'Select Faculty', 'FEP' => 'FEP', 'FF' => 'FF', 'FKAB' => 'FKAB', 'FPI' => 'FPI', 'FP' => 'FP', 'FPEND' => 'FPEND', 'FPERG' => 'FPERG', 'FSK' => 'FSK', 'FST' => 'FST', 'FSSK' => 'FSSK', 'FTSM' => 'FTSM', 'FUU' => 'FUU'], $user->faculty, ['class' => 'form-control']) }}
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <fieldset>
+                                            <label>Phone Number</label>
+                                            {{ Form::text('phone', $user->phone, ['class' => 'form-control', 'placeholder' => 'Phone']) }}
+                                        </fieldset>
+                                    </div>
+                                    {{ Form::hidden('_method', 'PUT') }}
                                 </div>
-                            </div>
-                            <div class="col-md-7 pl-1">
-                                <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" placeholder="Email" value="{{$user->email}}" disabled>
+                                <div class="form-group float-right">
+                                    <a href="/profiles/{{ $user->id }}" class="btn btn-secondary">Back</a>
+                                    <button type="submit" value="submit"
+                                        class="btn btn-success">Update</button>
                                 </div>
-                            </div>
-                            </div>
-                            <div class="row">
-                            <div class="col-md-4 pr-1">
-                                <div class="form-group">
-                                <label>Phone</label>
-                                {{ Form::text('phone', $user->phone, ['class' => 'form-control', 'placeholder' => 'Phone']) }}
-                                </div>
-                            </div>
-                            </div>
-                            <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                <label>About Me</label>
-                                <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description" value="Mike" disabled>Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
-                                </div>
-                            </div>
-                            </div>
-                            {{Form::hidden('_method', 'PUT')}}
-                            <div class="form-group float-right">
-                                <a href="/profiles/{{$user->id}}" class="btn btn-default btn-round">Back</a>
-                                <button type="submit" value="submit" class="btn btn-primary btn-round">Update</button>
-                            </div>
-                        {!! Form::close() !!}
-                      </div>
-                  </div>
-              </div>
-              </div>
-            </div>
-            <footer class="footer">
-              <div class=" container-fluid ">
-                <nav>
-                  <ul>
-                    <li><a href="#">Lost & Found</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Blog</a></li>
-                  </ul>
-                </nav>
-                <div class="copyright" id="copyright">
-                  &copy; <script>
-                    document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-                  </script>, Designed by <a href="#">Invision</a>. Coded by <a href="#">Creative Tim</a>.
+                                {!! Form::close() !!}
+                            </form>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </footer>
-          </div>
-        {{-- <h1>Edit Profile</h1>
-        {!! Form::open(['action' => ['ProfileController@update', $user->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-            <div class="form-group">
-                {{ Form::label('name', 'Name') }}
-                {{ Form::text('name', $user->name, ['class' => 'form-control']) }}
             </div>
-
-            <div class="form-group">
-                {{ Form::label('phone', 'Phone') }}
-                {{ Form::text('phone', $user->phone, ['class' => 'form-control']) }}
-            </div>
-
-            <div class="form-group">
-                {{Form::file('image')}}
-            </div>
-
-            {{Form::hidden('_method', 'PUT')}}
-            <div class="form-group">
-                <button type="submit" value="submit" class="btn btn-primary">Submit</button>
-            </div>
-        {!! Form::close() !!} --}}
+        </div>
     </div>
 @endsection

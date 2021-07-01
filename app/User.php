@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Lost;
+use App\Claim;
 
 class User extends Authenticatable
 {
@@ -16,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone',
+        'name', 'email', 'password', 'phone', 'faculty', 'gender'
     ];
 
     /**
@@ -36,4 +38,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function lost(){
+        return $this->hasMany(Lost::class);
+    }
+
+    public function claims() {
+        return $this->hasMany(Claim::class);
+    }
 }

@@ -27,6 +27,22 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
+.bottomleft {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+
+.bottomright {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+.img-grayscale {
+  filter: grayscale(100%);
+}
+
 .bootstrap-switch {
   display: inline-block;
   direction: ltr;
@@ -3570,12 +3586,12 @@ h5.category,
   font-weight: 400;
 }
 
-h6,
+/* h6,
 .h6 {
   font-size: 0.9em;
   font-weight: 700;
   text-transform: uppercase;
-}
+} */
 
 p {
   line-height: 1.61em;
@@ -4513,6 +4529,7 @@ Created using IcoMoon - icomoon.io
   background-color: #18ce0f;
 }
 
+/* margin bottom default 20px */
 .navbar {
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
@@ -5526,6 +5543,10 @@ img {
 
 .card[data-background-color="green"] {
   background-color: #15b60d;
+}
+
+.card[data-background-color="gray"] {
+  background-color: #6c757d;
 }
 
 .card-plain {

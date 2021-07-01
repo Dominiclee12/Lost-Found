@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Found;
+use App\Lost;
 
 class Category extends Model
 {
@@ -16,5 +17,9 @@ class Category extends Model
 
     public function found(){
         return $this->hasMany(Found::class);
+    }
+
+    public function lost(){
+        return $this->hasMany(Lost::class);
     }
 }

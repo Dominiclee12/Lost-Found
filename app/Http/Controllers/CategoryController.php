@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('created_at','asc')->paginate(10);
+        $categories = Category::orderBy('created_at','asc')->get();
 
         return view('admin.category.index')->with('categories', $categories);
     }
@@ -71,7 +71,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
 
         //Check for correct user / admin
-        if(auth()->user()->user_level == 'admin'){
+        if(auth()->user()->user_level != 'user'){
             return view('admin.category.edit')->with('category', $category);
         }
         else{
@@ -97,7 +97,8 @@ class CategoryController extends Controller
         $category->name = $request->input('category');
         $category->save();
 
-        return redirect()->back()->with('success', 'Category Updated');
+        // return redirect()->back()->with('success', 'Category Updated');
+        return redirect('/categories')->with('success', 'Category Updated');
     }
 
     /**
@@ -110,7 +111,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
 
-        if(auth()->user()->user_level == 'admin') {
+        if(auth()->user()->user_level != 'user') {
             $category->delete();
             return redirect()->back()->with('success', 'Category Removed');
         } else {
