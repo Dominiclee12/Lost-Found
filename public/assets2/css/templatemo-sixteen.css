@@ -123,7 +123,7 @@ a.filled-button:hover {
 }
 
 .products-heading {
-	background-image: url(https://www.ukm.my/portal/wp-content/uploads/2014/07/facility24-1024x683.jpg);
+	background-image: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url(https://apicms.thestar.com.my/uploads/images/2020/03/29/623554.jpg);
 }
 
 .about-heading {
